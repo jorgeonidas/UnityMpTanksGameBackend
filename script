@@ -1,0 +1,37 @@
+if (isPlayer)
+        {
+            ServerManager.instance.SendAttackEvent(skillbarIndex, damage, false, enemyId);
+            currentSkillBullet = skillBullet;
+            currentSkillBullet.SetDamage(damage);//3 balas
+            currentSkillBullet.speed = speed;
+            currentSkillBullet.skillThatlaunched = skillname;
+            if (skillAnimationName != "")
+                player.getHunterCharacter().GetHunterAnimator().SetTrigger(skillAnimationName);
+            else
+                ShootSkillWithoutAnimation(singleTargetShot);
+        }
+
+
+        ServerManager.instance.SendAttackEvent(AttackTypes.areaDamageSkill, hunterVFXskillIndentifier, false, "");
+        player.getHunterCharacter().GetHunterAnimator().SetTrigger(skillAnimationName);
+        //Misile inhierits from _Projectile
+
+        currentSkillBullet = skillMisile.GetComponent<_Projectile>();
+        currentSkillBullet.skillThatlaunched = skillName;
+        currentSkillBullet.SetDamage(damage);
+        //currentSkillBullet.launchByPlayer = true;
+
+        ServerManager.instance.SendAttackEvent(AttackTypes.areaDamageSkill, hunterVFXskillIndentifier, false);
+
+
+         if (trackEntry.Animation.Name.StartsWith("Skill"))
+        {
+            StartCoroutine(SkillAnimFinish(0.125f));
+        }
+
+        IEnumerator SkillAnimFinish(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SetLaunchingSkill(false);
+        hunterAnimator.SetBool("LauchingSkill", false);
+    }
